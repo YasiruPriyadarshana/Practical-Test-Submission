@@ -37,7 +37,7 @@
 				<div id="alertError" class="alert alert-danger"></div>
 				<br>
 				
-				<div id="divHospitalsGrid">
+				<div id="divHospitalGrid">
 					<%
 					Hospital hospitalObj = new Hospital();
 					out.print(hospitalObj.readHospitals());

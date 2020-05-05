@@ -44,9 +44,10 @@ public class Hospital {
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Inserted successfully";
+			String newHospital = readHospitals();
+			output = "{\"status\":\"success\", \"data\": \"" + newHospital + "\"}";
 		} catch (Exception e) {
-			output = "Error while inserting Hospital Details";
+			output = "{\"status\":\"error\", \"data\":\"Error while inserting Hospital Details\"}";
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -63,7 +64,8 @@ public class Hospital {
 				return "Error while connecting to the database for reading.";
 			}
 			// Prepare the html table to be displayed
-			output = "<table border=\"1\"><tr><th>HospitalID</th>"+"<th>Address</th><th>City</th>"+ "<th>Phone</th>"+ "<th>Name</th>"+ "<th>Rooms</th>"+"<th>Update</th><th>Remove</th></tr>";
+			output = "<table border=\"1\"><tr><th>HospitalID</th>"+"<th>Address</th><th>City</th>"+ "<th>Phone</th>"+ "<th>Name</th>"
+					+ "<th>Rooms</th>"+"<th>Update</th><th>Remove</th></tr>";
 			String query = "select * from hospitals";
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -77,14 +79,17 @@ public class Hospital {
 				String hospitalname = rs.getString("Name");
 				String rooms = rs.getString("Rooms");
 				// Add into the html table
-				output += "<tr><td>" + hospitalid + "</td>";
-				output += "<td>" + address + "</td>";
+				output += "<tr><td><input id='hidHospitalIDUpdate'name='hidHospitalIDUpdate'type='hidden' value='" + hospitalid
+						+ "'>" + address + "</td>";
 				output += "<td>" + city + "</td>";
 				output += "<td>" + phone + "</td>";
 				output += "<td>" + hospitalname + "</td>";
 				output += "<td>" + rooms + "</td>";
 				// buttons
-				output += "<td><input name=\"btnUpdate\" "+ " type=\"button\" value=\"Update\"></td>"+ "<td><form method=\"post\" action=\"items.jsp\">"+ "<input name=\"btnRemove\" type=\"submit\" value=\"Remove\" class=\"btn btn-danger\">"+ "<input name=\"hospitalid\" type=\"hidden\" "+ " value=\"" + hospitalid + "\">" + "</form></td></tr>";
+				
+				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"
+						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger'data-hospitalid='"
+						+ hospitalid + "'>" + "</td></tr>";
 			}
 			con.close();
 			// Complete the html table
@@ -92,11 +97,14 @@ public class Hospital {
 		}
 			catch (Exception e)
 		{
-				output = "Error while reading the items.";
+				output = "Error while reading the Hospitals.";
 				System.err.println(e.getMessage());
 		}
 		return output;
 	}
+	
+	
+	
 	
 	public String updateHospital(String id,String address, String city, String phone, String name, String room)
 	{
