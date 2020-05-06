@@ -45,15 +45,15 @@ public class Hospital {
 			// iterate through the rows in the result set
 			while (rs.next())
 			{
-				String hospitalid = Integer.toString(rs.getInt("HospitalID"));
+				String hospitalID = Integer.toString(rs.getInt("HospitalID"));
 				String address = rs.getString("Address");
 				String city = rs.getString("City");
 				String phone = Integer.toString(rs.getInt("Phone"));
 				String hospitalname = rs.getString("Name");
 				String rooms = rs.getString("Rooms");
 				// Add into the html table
-				output += "<tr><td><input id='hidHospitalIDUpdate' name='hidHospitalIDUpdate' type='hidden' value='" + hospitalid
-						+ "'>" + address + "</td>";
+				output += "<tr><td><input id='hidHospitalIDUpdate' name='hidHospitalIDUpdate' type='hidden' value='" + hospitalID+ "'>" + address + "</td>";
+				
 				output += "<td>" + city + "</td>";
 				output += "<td>" + phone + "</td>";
 				output += "<td>" + hospitalname + "</td>";
@@ -61,9 +61,9 @@ public class Hospital {
 				// buttons
 				
 				
-				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"
-						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger' data-hospitalid='" 
-											+ hospitalid + "'>" + "</td></tr>";
+				output += "<td><input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-secondary'></td>"
+						+ "<td><input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-hospitalid='" 
+											+ hospitalID + "'>" + "</td></tr>";
 			}
 			con.close();
 			// Complete the html table
@@ -143,7 +143,7 @@ public class Hospital {
 		return output;
 	}
 	
-	public String deleteHospital(String HospitalID) {
+	public String deleteHospital(String hospitalID) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -154,7 +154,7 @@ public class Hospital {
 			String query = "delete from hospitals where HospitalID=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, Integer.parseInt(HospitalID));
+			preparedStmt.setInt(1, Integer.parseInt(hospitalID));
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
