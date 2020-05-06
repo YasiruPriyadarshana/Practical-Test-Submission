@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import sun.rmi.runtime.Log;
+
 public class Hospital {
 	public Connection connect() {
 
@@ -43,14 +45,14 @@ public class Hospital {
 			// iterate through the rows in the result set
 			while (rs.next())
 			{
-				String hospitald = Integer.toString(rs.getInt("HospitalID"));
+				String hospitalid = Integer.toString(rs.getInt("HospitalID"));
 				String address = rs.getString("Address");
 				String city = rs.getString("City");
 				String phone = Integer.toString(rs.getInt("Phone"));
 				String hospitalname = rs.getString("Name");
 				String rooms = rs.getString("Rooms");
 				// Add into the html table
-				output += "<tr><td><input id='hidHospitalIDUpdate' name='hidHospitalIDUpdate' type='hidden' value='" + hospitald
+				output += "<tr><td><input id='hidHospitalIDUpdate' name='hidHospitalIDUpdate' type='hidden' value='" + hospitalid
 						+ "'>" + address + "</td>";
 				output += "<td>" + city + "</td>";
 				output += "<td>" + phone + "</td>";
@@ -58,9 +60,9 @@ public class Hospital {
 				output += "<td>" + rooms + "</td>";
 				// buttons
 				
+				
 				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"
-						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger' data-hospitalid='"
-						+ hospitald + "'>" + "</td></tr>";
+						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger'data-hospitalid='"+ hospitalid +"'>" + "</td></tr>";
 			}
 			con.close();
 			// Complete the html table
