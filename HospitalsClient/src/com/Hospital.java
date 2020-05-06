@@ -22,6 +22,59 @@ public class Hospital {
 
 	}
 
+
+	public String readHospitals()
+	{
+		String output = "";
+		try
+		{
+			Connection con = connect();
+			if (con == null)
+			{ 
+				
+				return "Error while connecting to the database for reading.";
+			}
+			// Prepare the html table to be displayed
+			output = "<table border='1'><tr><th>Address</th><th>City</th><th>Phone</th><th>Name</th>"
+			+ "<th>Rooms</th><th>Update</th><th>Remove</th></tr>";
+			String query = "select * from hospitals";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			// iterate through the rows in the result set
+			while (rs.next())
+			{
+				String hospitald = Integer.toString(rs.getInt("HospitalID"));
+				String address = rs.getString("Address");
+				String city = rs.getString("City");
+				String phone = Integer.toString(rs.getInt("Phone"));
+				String hospitalname = rs.getString("Name");
+				String rooms = rs.getString("Rooms");
+				// Add into the html table
+				output += "<tr><td><input id='hidHospitalIDUpdate'name='hidHospitalIDUpdate'type='hidden' value='" + hospitald
+						+ "'>" + address + "</td>";
+				output += "<td>" + city + "</td>";
+				output += "<td>" + phone + "</td>";
+				output += "<td>" + hospitalname + "</td>";
+				output += "<td>" + rooms + "</td>";
+				// buttons
+				
+				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"
+						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger'data-hospitalid='"
+						+ hospitald + "'>" + "</td></tr>";
+			}
+			con.close();
+			// Complete the html table
+			output += "</table>";
+		}
+			catch (Exception e)
+		{
+				output = "Error while reading the Hospitals.";
+				System.err.println(e.getMessage());
+		}
+		return output;
+	}
+	
+	
 	public String insertHospital(String address, String city, String phone, String name, String rooms) {
 		String output = "";
 		try {
@@ -52,57 +105,6 @@ public class Hospital {
 		}
 		return output;
 	}
-
-	public String readHospitals()
-	{
-		String output = "";
-		try
-		{
-			Connection con = connect();
-			if (con == null)
-			{
-				return "Error while connecting to the database for reading.";
-			}
-			// Prepare the html table to be displayed
-			output = "<table border=\"1\"><tr><th>HospitalID</th>"+"<th>Address</th><th>City</th>"+ "<th>Phone</th>"+ "<th>Name</th>"
-					+ "<th>Rooms</th>"+"<th>Update</th><th>Remove</th></tr>";
-			String query = "select * from hospitals";
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			// iterate through the rows in the result set
-			while (rs.next())
-			{
-				String hospitalid = Integer.toString(rs.getInt("HospitalID"));
-				String address = rs.getString("Address");
-				String city = rs.getString("City");
-				String phone = Integer.toString(rs.getInt("Phone"));
-				String hospitalname = rs.getString("Name");
-				String rooms = rs.getString("Rooms");
-				// Add into the html table
-				output += "<tr><td><input id='hidHospitalIDUpdate'name='hidHospitalIDUpdate'type='hidden' value='" + hospitalid
-						+ "'>" + address + "</td>";
-				output += "<td>" + city + "</td>";
-				output += "<td>" + phone + "</td>";
-				output += "<td>" + hospitalname + "</td>";
-				output += "<td>" + rooms + "</td>";
-				// buttons
-				
-				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"
-						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger'data-hospitalid='"
-						+ hospitalid + "'>" + "</td></tr>";
-			}
-			con.close();
-			// Complete the html table
-			output += "</table>";
-		}
-			catch (Exception e)
-		{
-				output = "Error while reading the Hospitals.";
-				System.err.println(e.getMessage());
-		}
-		return output;
-	}
-	
 	
 	
 	
@@ -127,13 +129,13 @@ public class Hospital {
 	// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Updated successfully";
-	}
-	catch (Exception e)
-	{
-		output = "Error while updating the Hospital Details";
-		System.err.println(e.getMessage());
-	}
+			con.close();
+			String newHospital = readHospitals();
+			output = "{\"status\":\"success\", \"data\": \"" + newHospital + "\"}";
+		} catch (Exception e) {
+			output = "{\"status\":\"error\", \"data\":\"Error while Updating Hospital Details\"}";
+			System.err.println(e.getMessage());
+		}
 		return output;
 	}
 	
@@ -152,9 +154,11 @@ public class Hospital {
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
-			output = "Deleted successfully";
+			con.close();
+			String newHospital = readHospitals();
+			output = "{\"status\":\"success\", \"data\": \"" + newHospital + "\"}";
 		} catch (Exception e) {
-			output = "Error while deleting the Hospital";
+			output = "{\"status\":\"error\", \"data\":\"Error while Deleting Hospital Details\"}";
 			System.err.println(e.getMessage());
 		}
 		return output;

@@ -22,7 +22,7 @@ $(document).on("click", "#btnSave", function(event) {
 		return;
 	}
 	// If valid------------------------
-	var type = ($("#hidHospitalIDSave").val() == "") ? "POST" : "PUT";
+	var type = ($("#hidHospitalIDSave").val() == "") ? "PUT" : "POST";
 	
 	$.ajax(
 	{
@@ -39,11 +39,25 @@ $(document).on("click", "#btnSave", function(event) {
 
 
 
+//remove----
+$(document).on("click", ".btnRemove", function(event) {
+	$.ajax({
+		url : "HospitalAPI",
+		type : "DELETE",
+		data : "HospitalID=" + $(this).data("HospitalID"),
+		dataType : "text",
+		complete : function(response, status) {
+			oneHospitalDeleteComplete(response.responseText, status);
+		}
+	});
+});
+
 
 
 
 function onHospitalSaveComplete(response, status) {
 	if (status == "success") {
+		
 		
 		var resultSet = JSON.parse(response);
 		
@@ -51,7 +65,7 @@ function onHospitalSaveComplete(response, status) {
 		{
 			$("#alertSuccess").text("Successfully saved.");
 			$("#alertSuccess").show();
-			$("#divItemsGrid").html(resultSet.data);
+			$("#divHospitalGrid").html(resultSet.data);
 		} else if (resultSet.status.trim() == "error")
 		{
 			$("#alertError").text(resultSet.data);
@@ -72,18 +86,7 @@ function onHospitalSaveComplete(response, status) {
 }
 
 
-//remove----
-$(document).on("click", ".btnRemove", function(event) {
-	$.ajax({
-		url : "HospitalAPI",
-		type : "DELETE",
-		data : "HospitalID=" + $(this).data("HospitalID"),
-		dataType : "text",
-		complete : function(response, status) {
-			oneHospitalDeleteComplete(response.responseText, status);
-		}
-	});
-});
+
 
 function oneHospitalDeleteComplete(response, status) {
 	if (status == "success") {
@@ -91,7 +94,7 @@ function oneHospitalDeleteComplete(response, status) {
 		if (resultSet.status.trim() == "success") {
 			$("#alertSuccess").text("Successfully deleted.");
 			$("#alertSuccess").show();
-			$("#divItemsGrid").html(resultSet.data);
+			$("#divHospitalGrid").html(resultSet.data);
 		} else if (resultSet.status.trim() == "error") {
 			$("#alertError").text(resultSet.data);
 			$("#alertError").show();
@@ -145,7 +148,7 @@ function validateHospitalForm() {
 	}
 	// convert to decimal price
 	
-	$("#Phone").val(parseFloat(tmpPrice).toFixed(2));
+	$("#Phone").val(parseInt(tmpPrice));
 	// DESCRIPTION------------------------
 	if ($("#Name").val().trim() == "") {
 		return "Insert Hospital Name.";
