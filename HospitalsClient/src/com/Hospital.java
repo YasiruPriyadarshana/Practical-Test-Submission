@@ -62,7 +62,8 @@ public class Hospital {
 				
 				
 				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"
-						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger'data-hospitalid='"+ hospitalid +"'>" + "</td></tr>";
+						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger' data-hospitalid='" 
+											+ hospitalid + "'>" + "</td></tr>";
 			}
 			con.close();
 			// Complete the html table
@@ -142,7 +143,7 @@ public class Hospital {
 		return output;
 	}
 	
-	public String deleteHospital(String id) {
+	public String deleteHospital(String HospitalID) {
 		String output = "";
 		try {
 			Connection con = connect();
@@ -153,7 +154,7 @@ public class Hospital {
 			String query = "delete from hospitals where HospitalID=?";
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			// binding values
-			preparedStmt.setInt(1, Integer.parseInt(id));
+			preparedStmt.setInt(1, Integer.parseInt(HospitalID));
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
