@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class HospitalAPI
  */
-@WebServlet("/HospitalAPI")
+@WebServlet("/HospitalsAPI")
 public class HospitalAPI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Hospital hospitalobj=new Hospital();
@@ -70,7 +71,7 @@ public class HospitalAPI extends HttpServlet {
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Map paras = getParasMap(request);
-		String output = hospitalobj.deleteHospital(paras.get("HospitalID").toString());
+		String output = hospitalobj.deleteHospital(paras.get("hospitald").toString());
 		response.getWriter().write(output);
 	}
 	

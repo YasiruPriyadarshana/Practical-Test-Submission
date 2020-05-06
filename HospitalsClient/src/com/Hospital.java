@@ -50,7 +50,7 @@ public class Hospital {
 				String hospitalname = rs.getString("Name");
 				String rooms = rs.getString("Rooms");
 				// Add into the html table
-				output += "<tr><td><input id='hidHospitalIDUpdate'name='hidHospitalIDUpdate'type='hidden' value='" + hospitald
+				output += "<tr><td><input id='hidHospitalIDUpdate' name='hidHospitalIDUpdate' type='hidden' value='" + hospitald
 						+ "'>" + address + "</td>";
 				output += "<td>" + city + "</td>";
 				output += "<td>" + phone + "</td>";
@@ -59,7 +59,7 @@ public class Hospital {
 				// buttons
 				
 				output += "<td><input name='btnUpdate'type='button' value='Update'class='btnUpdate btn btn-secondary'></td>"
-						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger'data-hospitalid='"
+						+ "<td><input name='btnRemove'type='button' value='Remove'class='btnRemove btn btn-danger' data-hospitalid='"
 						+ hospitald + "'>" + "</td></tr>";
 			}
 			con.close();
@@ -79,6 +79,7 @@ public class Hospital {
 		String output = "";
 		try {
 			Connection con = connect();
+			
 			if (con == null) {
 				return "Error while connecting to the database";
 			}

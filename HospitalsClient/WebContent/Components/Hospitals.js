@@ -22,11 +22,11 @@ $(document).on("click", "#btnSave", function(event) {
 		return;
 	}
 	// If valid------------------------
-	var type = ($("#hidHospitalIDSave").val() == "") ? "PUT" : "POST";
+	var type = ($("#hidHospitalIDSave").val() == "") ? "POST" : "PUT";
 	
 	$.ajax(
 	{
-		url : "HospitalAPI",
+		url : "HospitalsAPI",
 		type : type,
 		data : $("#formHospital").serialize(),
 		dataType : "text",
@@ -42,7 +42,7 @@ $(document).on("click", "#btnSave", function(event) {
 //remove----
 $(document).on("click", ".btnRemove", function(event) {
 	$.ajax({
-		url : "HospitalAPI",
+		url : "HospitalsAPI",
 		type : "DELETE",
 		data : "HospitalID=" + $(this).data("HospitalID"),
 		dataType : "text",
@@ -65,7 +65,7 @@ function onHospitalSaveComplete(response, status) {
 		{
 			$("#alertSuccess").text("Successfully saved.");
 			$("#alertSuccess").show();
-			$("#divHospitalGrid").html(resultSet.data);
+			$("#divHospitalsGrid").html(resultSet.data);
 		} else if (resultSet.status.trim() == "error")
 		{
 			$("#alertError").text(resultSet.data);
@@ -94,7 +94,7 @@ function oneHospitalDeleteComplete(response, status) {
 		if (resultSet.status.trim() == "success") {
 			$("#alertSuccess").text("Successfully deleted.");
 			$("#alertSuccess").show();
-			$("#divHospitalGrid").html(resultSet.data);
+			$("#divHospitalsGrid").html(resultSet.data);
 		} else if (resultSet.status.trim() == "error") {
 			$("#alertError").text(resultSet.data);
 			$("#alertError").show();
@@ -146,9 +146,6 @@ function validateHospitalForm() {
 	if (!$.isNumeric(tmpPrice)) {
 		return "Insert a numerical value for Phone Number.";
 	}
-	// convert to decimal price
-	
-	$("#Phone").val(parseInt(tmpPrice));
 	// DESCRIPTION------------------------
 	if ($("#Name").val().trim() == "") {
 		return "Insert Hospital Name.";

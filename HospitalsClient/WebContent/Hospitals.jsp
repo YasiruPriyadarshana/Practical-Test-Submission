@@ -37,10 +37,10 @@
 				<div id="alertError" class="alert alert-danger"></div>
 				<br>
 				
-				<div id="divHospitalGrid">
+				<div id="divHospitalsGrid">
 					<%
-					Hospital hospitalObj = new Hospital();
-					out.print(hospitalObj.readHospitals());
+						Hospital hospitalObj = new Hospital();
+						out.print(hospitalObj.readHospitals());
 					%>
 				</div>
 				
